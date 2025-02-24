@@ -41,12 +41,12 @@ class _splashScreenState extends State<splashScreen> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/splash2.jpg'),
+            image: AssetImage('assets/images/DSC01165.jpg'),
             fit: BoxFit.cover
           )
         ),
         child: Center(
-          child: Text('পান্থাবাস',
+          child: Text('Frex game',
           style: TextStyle(
             fontWeight: FontWeight.bold,
                 fontSize: 50,

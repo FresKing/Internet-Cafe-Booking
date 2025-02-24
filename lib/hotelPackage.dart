@@ -70,7 +70,7 @@ class HotelPackage extends StatelessWidget {
                               Text(hotel[index].location, style: TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.w400
                               ),),
-                              Text('${hotel[index].price} Tk per night',
+                              Text('Rp. ${hotel[index].price} / Hour',
                                 style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,

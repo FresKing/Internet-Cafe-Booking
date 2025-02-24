@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Hello Guys!",
+                    Text("Hello Gamers!",
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
                       height: 5,
                     ),
                     Text(
-                      "Find Your Hotel",
+                      "welcome to Frex Game",
                       style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
           ),
           SizedBox(height: 20.0,),
           Padding(padding: EdgeInsets.only(left: 20),
-            child: Text("Most Popular",
+            child: Text("VIP's",
             style: TextStyle(
               fontWeight: FontWeight.bold,fontSize: 19.0
             ),),
@@ -174,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('${hotel[index].price} tk',
+                                Text('Rp. ${hotel[index].price}',
                                   style: TextStyle(
                                       color: Colors.red, fontSize: 12),
                                 ),
@@ -205,7 +205,7 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               children: [
-                Text('Best Deals',
+                Text("Regular PC's",
                 style: TextStyle(
                   fontSize: 20.0,fontWeight: FontWeight.bold
                 ),)

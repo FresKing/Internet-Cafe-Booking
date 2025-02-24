@@ -91,7 +91,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       children: [
                         Text('Price',style: TextStyle(color: Colors.grey),),
                         SizedBox(height: 10,),
-                        Text('${widget.hotel.price} Tk '),
+                        Text('Rp. ${widget.hotel.price}'),
                       ],
                     ),
                   ),
@@ -117,7 +117,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Recently booked',style: TextStyle(color: Colors.grey),),
+                        Text('Status',style: TextStyle(color: Colors.grey),),
                         SizedBox(height: 10,),
                         Stack(
                           children: [
