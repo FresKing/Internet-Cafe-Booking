@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:panthabash/hotelPackage.dart';
@@ -108,7 +107,7 @@ class _HomePageState extends State<HomePage> {
           ),
           SizedBox(height: 20,),
           Container(
-            height: 200,
+            height: 204,
             width: double.infinity,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -216,7 +215,12 @@ class _HomePageState extends State<HomePage> {
           HotelPackage(),
         ],
       ),
+      bottomNavigationBar: Container(
+        height: 20,
+        color: Colors.white,
+      ),
     );
   }
 }
+
 
