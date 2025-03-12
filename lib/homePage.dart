@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:panthabash/hotelPackage.dart';
-import 'package:panthabash/modal/hotel.dart';
-import 'package:panthabash/modal/hoteldetails.dart';
+import 'package:panthabash/modal/dataPC.dart';
+import 'package:panthabash/modal/PCdetails.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final hotel = Hotel.hotellist();
+  final dataPC = DataPC.VIPlist();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
                       height: 5,
                     ),
                     Text(
-                      "welcome to Frex Game",
+                      "welcome to Frex Game Station",
                       style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
@@ -61,43 +61,43 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: 10,
           ),
-          Padding(
-            padding: const EdgeInsets.all(11.0),
-            child: Container(
-              height: 50,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Color(0xFFEFEDEE),
-                  borderRadius: BorderRadius.circular(10.0),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black12,
-                        offset: Offset(0.0, 10.0),
-                        blurRadius: 10.0)
-                  ]),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Icon(
-                      Icons.search,
-                      color: Colors.grey,
-                      size: 30.0,
-                    ),
-                  ),
-                  Container(
-                    height: 50.0,
-                    width: MediaQuery.of(context).size.width * 0.79,
-                    child: TextField(
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'search your hotel'),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.all(11.0),
+          //   child: Container(
+          //     height: 50,
+          //     width: double.infinity,
+          //     decoration: BoxDecoration(
+          //         color: Color(0xFFEFEDEE),
+          //         borderRadius: BorderRadius.circular(10.0),
+          //         boxShadow: [
+          //           BoxShadow(
+          //               color: Colors.black12,
+          //               offset: Offset(0.0, 10.0),
+          //               blurRadius: 10.0)
+          //         ]),
+          //     child: Row(
+          //       children: [
+          //         Padding(
+          //           padding: EdgeInsets.symmetric(horizontal: 10.0),
+          //           child: Icon(
+          //             Icons.search,
+          //             color: Colors.grey,
+          //             size: 30.0,
+          //           ),
+          //         ),
+          //         Container(
+          //           height: 50.0,
+          //           width: MediaQuery.of(context).size.width * 0.79,
+          //           child: TextField(
+          //             decoration: InputDecoration(
+          //                 border: InputBorder.none,
+          //                 hintText: 'search your hotel'),
+          //           ),
+          //         )
+          //       ],
+          //     ),
+          //   ),
+          // ),
           SizedBox(height: 20.0,),
           Padding(padding: EdgeInsets.only(left: 20),
             child: Text("VIP's",
@@ -111,15 +111,15 @@ class _HomePageState extends State<HomePage> {
             width: double.infinity,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-                itemCount:hotel.length,
+                itemCount:dataPC.length,
                 itemBuilder: (context,index) {
-                  Hotel hotelscreen = hotel[index];
+                  DataPC hotelscreen = dataPC[index];
 
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (_) => DetailsScreen(
-                            hotel: hotelscreen,),));
+                            dataPC: hotelscreen,),));
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 10.0),
@@ -149,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                                       topRight: Radius.circular(10.0)
                                   ),
                                   image: DecorationImage(
-                                      image: AssetImage(hotel[index].imgurl),
+                                      image: AssetImage(dataPC[index].imgurl),
                                       fit: BoxFit.cover
                                   )
                               ),
@@ -157,36 +157,36 @@ class _HomePageState extends State<HomePage> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 10, top: 5),
-                            child: Text(hotel[index].title,
+                            child: Text(dataPC[index].title,
                               style: TextStyle(fontSize: 12),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(hotel[index].location,
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(left: 10),
+                          //   child: Text(hotel[index].location,
+                          //     style: TextStyle(fontSize: 12),
+                          //   ),
+                          // ),
                           Padding(
                             padding: const EdgeInsets.only(
                                 left: 7, top: 5, right: 3),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Rp. ${hotel[index].price}',
+                                Text('Rp. ${dataPC[index].price} / hour',
                                   style: TextStyle(
                                       color: Colors.red, fontSize: 12),
                                 ),
-                                Row(
-                                  children: [
-                                    Text(hotel[index].rating.toString(),
-                                      style: TextStyle(color: Colors.red),),
-                                    Icon(
-                                      Icons.star, color: Colors.red,
-                                      size: 12,
-                                    )
-                                  ],
-                                )
+                                // Row(
+                                //   children: [
+                                //     Text(hotel[index].rating.toString(),
+                                //       style: TextStyle(color: Colors.red),),
+                                //     Icon(
+                                //       Icons.star, color: Colors.red,
+                                //       size: 12,
+                                //     )
+                                //   ],
+                                // )
                               ],
                             ),
                           ),

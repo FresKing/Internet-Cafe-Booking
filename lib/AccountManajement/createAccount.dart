@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:panthabash/main.dart';
-import 'homePage.dart';
+import '../homePage.dart';
 import 'login.dart';
 
 class CreateAccountPage extends StatefulWidget {
@@ -12,6 +12,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   final _formKey = GlobalKey<FormState>();
   // ignore: unused_field
   late String _name, _email, _password, _confirmPassword, _phoneNumber;
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +53,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                       top: 50,
                       left: 20,
                       child: IconButton(
-                        icon: Icon(Icons.arrow_back,
+                        icon: Icon(Icons.arrow_back_ios,
                             size: 30, color: Colors.black),
                         onPressed: () {
                           Navigator.push(
@@ -138,10 +139,19 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                       ),
                       SizedBox(height: 10),
                       TextFormField(
-                        obscureText: true,
+                        obscureText: _obscureText,
                         decoration: InputDecoration(
                             suffixIcon:
-                                Icon(Icons.remove_red_eye, color: Colors.grey),
+                                IconButton(
+                                  icon: _obscureText
+                                      ? Icon(Icons.remove_red_eye, color: Colors.grey)
+                                      : Icon(Icons.visibility_off, color: Colors.grey),
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscureText = !_obscureText;
+                                    });
+                                  },
+                                ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white),
                             ),
@@ -157,7 +167,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                       ),
                       SizedBox(height: 10),
                       TextFormField(
-                        obscureText: true,
+                        obscureText: _obscureText,
                         decoration: InputDecoration(
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.white),
@@ -261,3 +271,4 @@ class ParallelogramClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
+

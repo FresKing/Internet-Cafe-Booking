@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:panthabash/main.dart';
-import 'homePage.dart';
-import 'createAccount.dart';
+import 'verificationCode.dart';
 
-class LoginPage extends StatelessWidget {
+class ForgetPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -43,7 +42,7 @@ class LoginPage extends StatelessWidget {
                         top: 50,
                         left: 20,
                         child: IconButton(
-                          icon: Icon(Icons.arrow_back,
+                          icon: Icon(Icons.arrow_back_ios,
                               size: 30, color: Colors.black),
                           onPressed: () {
                             Navigator.push(
@@ -55,10 +54,10 @@ class LoginPage extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                        top: 90,
+                        top: 100,
                         left: 100,
                         child: Text(
-                          "Welcome back",
+                          "Forgot Password?",
                           style: TextStyle(
                             fontSize: 36,
                             fontStyle: FontStyle.italic,
@@ -67,23 +66,26 @@ class LoginPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Positioned(
-                        bottom: 45,
-                        right: 100,
-                        child: Text(
-                          "Gamers!",
-                          style: TextStyle(
-                            fontSize: 36,
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.w900,
-                            fontFamily: 'franklin gothic',
-                          ),
-                        ),
-                      ),
+                      
                     ],
                   ),
 
-                  SizedBox(height: 90),
+                  SizedBox(height: 50),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 50),
+                    child: Text(
+                      "Please Enter Your Email Address To Receive a Verification Code",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                        // fontWeight: FontWeight.w500,
+                        color: const Color.fromARGB(255, 255, 255, 255),
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 20),
 
                   // Form Login
                   Padding(
@@ -107,47 +109,14 @@ class LoginPage extends StatelessWidget {
                                   fontStyle: FontStyle.italic)),
                           style: TextStyle(color: Colors.white),
                         ),
-                        SizedBox(height: 20),
-                        TextField(
-                          obscureText: true,
-                          decoration: InputDecoration(
-                              suffixIcon: Icon(Icons.remove_red_eye,
-                                  color: Colors.grey),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                              ),
-                              labelText: 'Password',
-                              labelStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontStyle: FontStyle.italic)),
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Checkbox(
-                              value: true,
-                              onChanged: (bool? value) {},
-                              activeColor: Colors.white,
-                              checkColor: Colors.black,
-                            ),
-                            Text(
-                              "Remember me",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
+                        
                       ],
                     ),
                   ),
 
                   SizedBox(height: 20),
 
-                  // Tombol Login
+                  // Tombol forgot password
                   ClipPath(
                     clipper: ParallelogramClipper(),
                     child: ElevatedButton(
@@ -162,11 +131,11 @@ class LoginPage extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => HomePage()),
+                          MaterialPageRoute(builder: (context) => VerificationCodePage()),
                         );
                       },
                       child: Text(
-                        'Log in',
+                        'Send Code',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -176,36 +145,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
 
-                  // Forgot Password
-                  Padding(
-                    padding: const EdgeInsets.only(right: 40),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Don't have an account? ",
-                          style: TextStyle(
-                              color: Colors.white, fontStyle: FontStyle.italic),
-                        ),
-                        SizedBox(width: 70),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CreateAccountPage()),
-                            );
-                          },
-                          child: Text(
-                            "Sign Up",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontStyle: FontStyle.italic),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  
                 ],
               ),
             ),
@@ -214,7 +154,10 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-// Custom Clipper untuk bentuk jajar genjang
+void main() => runApp(MaterialApp(
+      home: ForgetPasswordPage(),
+    ));
+
 class ParallelogramClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {

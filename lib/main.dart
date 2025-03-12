@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'login.dart';
-import 'createAccount.dart';
+import 'AccountManajement/login.dart';
+import 'AccountManajement/createAccount.dart';
 
 void main() {
   runApp(const MyApp());
