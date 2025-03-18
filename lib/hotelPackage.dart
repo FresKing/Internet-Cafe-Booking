@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:panthabash/modal/dataPC.dart';
 import 'package:panthabash/modal/PCdetails.dart';
@@ -9,7 +8,7 @@ class HotelPackage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 1000,
       width: double.infinity,
       child: ListView.separated(
         separatorBuilder: (_, index) => SizedBox(height: 10),

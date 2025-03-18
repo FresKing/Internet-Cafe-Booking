@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "366479603781",
+    "project_id": "warnet-booking",
+    "storage_bucket": "warnet-booking.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:366479603781:android:57c5ee0c0bd92db4d48b2c",
+        "android_client_info": {
+          "package_name": "com.example.new_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQWfWOXoa_PiyptruWZP_7qbnbmb0Kxxk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

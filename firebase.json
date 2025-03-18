@@ -1,0 +1,1 @@
+{"flutter":{"platforms":{"android":{"default":{"projectId":"warnet-booking","appId":"1:366479603781:android:57c5ee0c0bd92db4d48b2c","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"warnet-booking","configurations":{"android":"1:366479603781:android:57c5ee0c0bd92db4d48b2c","ios":"1:366479603781:ios:0b0604ea80e61db8d48b2c"}}}}}}

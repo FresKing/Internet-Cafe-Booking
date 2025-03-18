@@ -1,8 +1,59 @@
 import 'package:flutter/material.dart';
-import 'package:panthabash/main.dart';
-import 'verificationCode.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'login.dart';
 
-class ForgetPasswordPage extends StatelessWidget {
+class ForgetPasswordPage extends StatefulWidget {
+  @override
+  _ForgetPasswordPage createState() => _ForgetPasswordPage();
+}
+
+class _ForgetPasswordPage extends State<ForgetPasswordPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool _emailError = false;
+
+  Future<void> _sendPasswordResetLink() async {
+    String email = _emailController.text.trim();
+
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Please enter your email")),
+      );
+      return;
+    }
+
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text("Password reset link has been sent to your email")),
+      );
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Password Reset Link Sent"),
+          content: Text("Please check your email for password reset link."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              },
+              child: Text("OK"),
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: ${e.toString()}")),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -45,11 +96,7 @@ class ForgetPasswordPage extends StatelessWidget {
                           icon: Icon(Icons.arrow_back_ios,
                               size: 30, color: Colors.black),
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SplashScreen()),
-                            );
+                            Navigator.pop(context);
                           },
                         ),
                       ),
@@ -94,6 +141,7 @@ class ForgetPasswordPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextField(
+                          controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
@@ -104,7 +152,7 @@ class ForgetPasswordPage extends StatelessWidget {
                               ),
                               labelText: 'Email',
                               labelStyle: TextStyle(
-                                  color: Colors.white,
+                                  color: _emailError ? Colors.red : Colors.white,
                                   fontSize: 16,
                                   fontStyle: FontStyle.italic)),
                           style: TextStyle(color: Colors.white),
@@ -128,12 +176,7 @@ class ForgetPasswordPage extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.zero),
                       ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => VerificationCodePage()),
-                        );
-                      },
+                      onPressed: _sendPasswordResetLink,
                       child: Text(
                         'Send Code',
                         style: TextStyle(
@@ -144,8 +187,6 @@ class ForgetPasswordPage extends StatelessWidget {
                       ),
                     ),
                   ),
-
-                  
                 ],
               ),
             ),
@@ -153,10 +194,6 @@ class ForgetPasswordPage extends StatelessWidget {
         ));
   }
 }
-
-void main() => runApp(MaterialApp(
-      home: ForgetPasswordPage(),
-    ));
 
 class ParallelogramClipper extends CustomClipper<Path> {
   @override

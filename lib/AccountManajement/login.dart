@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:panthabash/main.dart';
 import '../homePage.dart';
 import 'createAccount.dart';
 import 'forgetPW.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,7 +10,41 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   bool _obscureText = true;
+  bool _emailError = false;
+  bool _passwordError = false;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  void _login() async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      // Tampilkan loading dan navigasi ke HomePage
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(child: CircularProgressIndicator());
+        },
+      );
+
+      await Future.delayed(Duration(seconds: 2)); // Simulasi loading
+      Navigator.of(context).pop(); // Tutup dialog loading
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Login failed: ${e.toString()}")));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,11 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                           icon: Icon(Icons.arrow_back_ios,
                               size: 30, color: Colors.black),
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SplashScreen()),
-                            );
+                            Navigator.pop(context);
                           },
                         ),
                       ),
@@ -100,6 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextField(
+                          controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
                               enabledBorder: UnderlineInputBorder(
@@ -110,13 +141,14 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               labelText: 'Email',
                               labelStyle: TextStyle(
-                                  color: Colors.white,
+                                  color: _emailError ? Colors.red : Colors.white,
                                   fontSize: 16,
                                   fontStyle: FontStyle.italic)),
                           style: TextStyle(color: Colors.white),
                         ),
                         SizedBox(height: 20),
                         TextField(
+                          controller: _passwordController,
                           obscureText: _obscureText,
                           decoration: InputDecoration(
                               suffixIcon: IconButton(
@@ -140,7 +172,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               labelText: 'Password',
                               labelStyle: TextStyle(
-                                  color: Colors.white,
+                                  color: _passwordError ? Colors.red : Colors.white,
                                   fontSize: 16,
                                   fontStyle: FontStyle.italic)),
                           style: TextStyle(color: Colors.white),
@@ -197,12 +229,7 @@ class _LoginPageState extends State<LoginPage> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.zero),
                       ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomePage()),
-                        );
-                      },
+                      onPressed: _login,
                       child: Text(
                         'Log in',
                         style: TextStyle(

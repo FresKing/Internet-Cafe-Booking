@@ -6,7 +6,7 @@ class DataPC {
 
   DataPC(this.imgurl, this.title, this.description, this.price);
 
- static List<DataPC> VIPlist() {
+  static List<DataPC> VIPlist() {
     return [
       DataPC('assets/images/VIP 1.jpg', 'Setup Gaming Futuristik','Boasting a fitness centre, shared lounge and views of city, Empyrean Hotel is set in Dhaka, 1.7 km from Bangladesh University of Textiles. Among the facilities of this property are a restaurant, a 24-hour front desk and room service, along with free WiFi throughout the property. The accommodation offers an ATM, a concierge service and currency exchange for guests.',  15000),
 
@@ -48,5 +48,15 @@ class DataPC {
    ];
   }
 
-}
+  static List<DataPC> dipesanList(){
+    return[
+      DataPC('assets/images/regular 1.jpg', 'Raddison Blu',"As the city’s premier international hotel, the Radisson Blu Chattogram Bay View offers you an unforgettable stay with spectacular views of Chattogram, the Bay of Bengal, and the Hill Tracts. Enjoy posh rooms and suites within walking distance of M. A. Aziz Stadium and landmarks like the Circuit House in this commercial capital. The hotel is just a 10-minute drive from the city’s main business hub and less than 45 minutes from Shah Amanat International Airport" ,  10000),
 
+      DataPC('assets/images/regular 2.jpg', 'Renaissance',"Conveniently located in the most dynamic and inspiring neighborhood of Gulshan, Renaissance Dhaka Gulshan Hotel is ideal for business and leisure travelers alike. Enjoy easy access to the Hazrat Shahjalal International Airport, just 20 minutes away, and experience the distinctive local character that dictates the atmosphere and experiences for guests. Discover sophisticated elements and uber design throughout the 211 stylish rooms and suites. The infinity rooftop temperature-controlled pool with a stunning city vista view will take your breath away" ,  10000),
+
+      DataPC('assets/images/regular 3.jpg', 'Sonargaon Royal',"Welcome to Sonargaon Royal ResortWe welcome you to our resort as you enlighten our abode with your warmth and smiley nature. We are truly grateful to you for your visit here and hope to have memorable moments throughout your visit." ,  10000),
+
+      DataPC('assets/images/regular 4.jpg', 'Hotel Grand Park',"Hotel Grand Park Barisal aims to exceed all expectations as we welcome guests from around the globe. With this in mind, you will find our business and recreation facilities prepare you to take on the world - or the bustle of busy city." ,  10000),
+    ];
+  }
+}

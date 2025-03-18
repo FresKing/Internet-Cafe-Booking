@@ -45,11 +45,7 @@ class VerificationCodePage extends StatelessWidget {
                         icon: Icon(Icons.arrow_back_ios,
                             size: 30, color: Colors.black),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SplashScreen()),
-                          );
+                          Navigator.pop(context);
                         },
                       ),
                     ),
