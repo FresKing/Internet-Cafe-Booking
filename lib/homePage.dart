@@ -117,7 +117,7 @@ class HomeScreen extends StatelessWidget {
                                   height: 5,
                                 ),
                                 Text(
-                                  "welcome to Frex Game Station",
+                                  "Welcome to Frex Game Station",
                                   style: TextStyle(
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
@@ -125,15 +125,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            // Container(
-                            //   height: 50,
-                            //   width: 50,
-                            //   decoration: BoxDecoration(
-                            //       borderRadius: BorderRadius.circular(100.0),
-                            //       image: DecorationImage(
-                            //           image: AssetImage('assets/images/face.jpg'),
-                            //           fit: BoxFit.cover)),
-                            // )
+                            
                           ],
                         ),
                       );
@@ -251,4 +243,5 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
 

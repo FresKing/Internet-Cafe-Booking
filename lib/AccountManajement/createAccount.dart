@@ -114,7 +114,11 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                           icon: Icon(Icons.arrow_back_ios,
                               size: 30, color: Colors.black),
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()),
+                            );
                           },
                         ),
                       ),
@@ -266,7 +270,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     ),
                   ),
 
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
                   // Tombol Login
                   ClipPath(
                     clipper: ParallelogramClipper(),
@@ -293,7 +297,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     ),
                   ),
 
-                  SizedBox(height: 10),
+                  // SizedBox(height: 10),
                   // Forgot Password
                   Padding(
                     padding: const EdgeInsets.only(right: 40),

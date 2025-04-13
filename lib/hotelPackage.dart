@@ -8,7 +8,7 @@ class HotelPackage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 1000,
+      height: 450,
       width: double.infinity,
       child: ListView.separated(
         separatorBuilder: (_, index) => SizedBox(height: 10),

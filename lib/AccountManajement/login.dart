@@ -88,7 +88,10 @@ class _LoginPageState extends State<LoginPage> {
                           icon: Icon(Icons.arrow_back_ios,
                               size: 30, color: Colors.black),
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => HomePage()),
+                            );
                           },
                         ),
                       ),
@@ -177,24 +180,10 @@ class _LoginPageState extends State<LoginPage> {
                                   fontStyle: FontStyle.italic)),
                           style: TextStyle(color: Colors.white),
                         ),
-                        SizedBox(height: 10),
+                        // SizedBox(height: 10),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Row(
-                              children: [
-                                Checkbox(
-                                  value: true,
-                                  onChanged: (bool? value) {},
-                                  activeColor: Colors.white,
-                                  checkColor: Colors.black,
-                                ),
-                                Text(
-                                  "Remember me",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ],
-                            ),
                             TextButton(
                               onPressed: () {
                                 Navigator.push(

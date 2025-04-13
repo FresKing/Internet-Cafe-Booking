@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:panthabash/modal/dataPC.dart';
-import 'package:panthabash/booking.dart';
+import 'package:panthabash/booking/booking.dart';
 
 class DetailsScreen extends StatefulWidget {
   final DataPC dataPC;

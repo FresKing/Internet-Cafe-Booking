@@ -58,42 +58,130 @@ class _ProfilPageState extends State<ProfilPage> {
 
   // Widget untuk menampilkan data user
   Widget _buildUserProfile() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        SizedBox(height: 20),
-        CircleAvatar(
-          radius: 50,
-          backgroundColor: Colors.grey,
-          backgroundImage: userData?['photoURL'] != null
-              ? NetworkImage(userData?['photoURL'])
-              : null,
-          child: userData?['photoURL'] == null
-              ? Text(
-                  userData?['name']?[0].toUpperCase() ?? '',
-                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-                )
-              : null,
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFF232526),
+            Color(0xFF414345),
+            Color(0xFF17191A),
+          ],
+          stops: [0.25, 0.60, 1.0],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
         ),
-        SizedBox(height: 10),
-        Text(
-          userData?['name'] ?? 'No Name',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 10),
-        Text(
-          userData?['email'] ?? 'No Email',
-          style: TextStyle(fontSize: 16, color: Colors.grey),
-        ),
-        SizedBox(height: 20),
-        ElevatedButton(
-          onPressed: () async {
-            await FirebaseAuth.instance.signOut();
-            setState(() {
-              user = null;
-            });
-          },
-          child: Text('Logout'),
+      ),
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: 20),
+          // Avatar + Nama + Email
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              CircleAvatar(
+                radius: 40,
+                backgroundColor: Colors.white,
+                backgroundImage: NetworkImage(userData?['photoUrl'] ??
+                    'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'),
+              ),
+              SizedBox(width: 15),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      userData?['name'] ?? 'No Name',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      userData?['email'] ?? 'No Email',
+                      style: TextStyle(fontSize: 16, color: Colors.white70),
+                    ),
+                  ],
+                ),
+              ),
+              // Tombol Edit
+              IconButton(
+                icon: Icon(Icons.edit, color: Colors.white),
+                onPressed: () {
+                  // Tambahkan navigasi ke halaman edit profil jika ada
+                },
+              ),
+            ],
+          ),
+          SizedBox(height: 30),
+
+          // Card untuk Informasi Tambahan
+          Card(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            elevation: 5,
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  _buildProfileItem(
+                      Icons.phone, userData?['phone'] ?? 'No Phone'),
+                  Divider(),
+                  _buildProfileItem(
+                      Icons.location_on, userData?['address'] ?? 'No Address'),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 30),
+
+          // Tombol Logout
+          ClipPath(
+            clipper: ParallelogramClipper(),
+            child: GestureDetector(
+              onTap: () async {
+                await FirebaseAuth.instance.signOut();
+                setState(() {
+                  user = null;
+                });
+              },
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 15),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Text(
+                    'Logout',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+// Widget untuk item profil (misalnya: nomor telepon, alamat)
+  Widget _buildProfileItem(IconData icon, String text) {
+    return Row(
+      children: [
+        Icon(icon, color: Colors.blueAccent),
+        SizedBox(width: 10),
+        Expanded(
+          child: Text(
+            text,
+            style: TextStyle(fontSize: 16),
+          ),
         ),
       ],
     );
@@ -241,7 +329,6 @@ class _ProfilPageState extends State<ProfilPage> {
     );
   }
 }
-
 
 class ParallelogramClipper extends CustomClipper<Path> {
   @override
