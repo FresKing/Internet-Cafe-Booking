@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'login.dart';
+import 'verificationCode.dart';
 
 class ForgetPasswordPage extends StatefulWidget {
   @override
@@ -9,10 +8,10 @@ class ForgetPasswordPage extends StatefulWidget {
 
 class _ForgetPasswordPage extends State<ForgetPasswordPage> {
   final TextEditingController _emailController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   bool _emailError = false;
 
-  Future<void> _sendPasswordResetLink() async {
+  void _sendPasswordResetLink() {
     String email = _emailController.text.trim();
 
     if (email.isEmpty) {
@@ -22,36 +21,12 @@ class _ForgetPasswordPage extends State<ForgetPasswordPage> {
       return;
     }
 
-    try {
-      await _auth.sendPasswordResetEmail(email: email);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text("Password reset link has been sent to your email")),
-      );
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text("Password Reset Link Sent"),
-          content: Text("Please check your email for password reset link."),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                );
-              },
-              child: Text("OK"),
-            ),
-          ],
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: ${e.toString()}")),
-      );
-    }
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VerificationCodePage(),
+      ),
+    );
   }
 
   @override
@@ -113,7 +88,6 @@ class _ForgetPasswordPage extends State<ForgetPasswordPage> {
                           ),
                         ),
                       ),
-                      
                     ],
                   ),
 
@@ -152,12 +126,12 @@ class _ForgetPasswordPage extends State<ForgetPasswordPage> {
                               ),
                               labelText: 'Email',
                               labelStyle: TextStyle(
-                                  color: _emailError ? Colors.red : Colors.white,
+                                  color:
+                                      _emailError ? Colors.red : Colors.white,
                                   fontSize: 16,
                                   fontStyle: FontStyle.italic)),
                           style: TextStyle(color: Colors.white),
                         ),
-                        
                       ],
                     ),
                   ),
@@ -211,3 +185,4 @@ class ParallelogramClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
+

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:panthabash/modal/dataPC.dart';
-import 'success.dart'; // Halaman sukses setelah pembayaran
+import 'success.dart';
 
 class PaymentPage extends StatefulWidget {
   final DataPC dataPC;
@@ -20,35 +20,50 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  String? selectedPaymentMethod; // Menyimpan metode pembayaran yang dipilih
+  String? selectedPaymentMethod;
 
-  void _confirmPayment() {
+  void _confirmPayment(BuildContext parentContext) async {
     if (selectedPaymentMethod == null) {
       _showWarning("Pilih metode pembayaran terlebih dahulu.");
       return;
     }
 
-    // Menampilkan popup konfirmasi pembayaran
     showDialog(
-      context: context,
+      context: parentContext,
       builder: (context) => AlertDialog(
         title: Text("Konfirmasi Pembayaran"),
         content: Text(
-            "Anda akan membayar Rp. ${widget.totalHarga} melalui $selectedPaymentMethod."),
+          "Anda akan membayar Rp. ${widget.totalHarga} melalui $selectedPaymentMethod.",
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text("Batal"),
           ),
-          FilledButton(
-            onPressed: () {
-              Navigator.pop(context); // Tutup pop-up
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        SuccessPage()), // Arahkan ke halaman sukses
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.pop(context); // Tutup pop-up dulu
+
+              // Show loading dialog
+              showDialog(
+                context: parentContext,
+                barrierDismissible: false,
+                builder: (context) => Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
+
+              // Simulate payment success delay
+              await Future.delayed(Duration(seconds: 2));
+
+              Navigator.pop(parentContext); // Close loading
+
+              if (mounted) {
+                Navigator.pushReplacement(
+                  parentContext,
+                  MaterialPageRoute(builder: (context) => SuccessPage()),
+                );
+              }
             },
             child: Text("Bayar Sekarang"),
           ),
@@ -81,7 +96,6 @@ class _PaymentPageState extends State<PaymentPage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 243, 243, 243),
       body: Container(
-        
         child: Padding(
           padding: EdgeInsets.all(16),
           child: Column(
@@ -117,7 +131,6 @@ class _PaymentPageState extends State<PaymentPage> {
                       blurRadius: 10.0,
                     ),
                   ],
-                  // backgroundBlendMode: BlendMode.softLight,
                 ),
                 child: Padding(
                   padding: EdgeInsets.all(16),
@@ -125,37 +138,12 @@ class _PaymentPageState extends State<PaymentPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 5),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("PC:", style: TextStyle(fontSize: 16, color: Colors.black)),
-                          Text(widget.dataPC.title, style: TextStyle(fontSize: 16, color: Colors.black)),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Tanggal:", style: TextStyle(fontSize: 16, color: Colors.black)),
-                          Text(formattedDate, style: TextStyle(fontSize: 16, color: Colors.black)),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Jam Booking:", style: TextStyle(fontSize: 16, color: Colors.black)),
-                          Text("${widget.selectedHours.first}:00 - ${widget.selectedHours.last + 1}:00", style: TextStyle(fontSize: 16, color: Colors.black)),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Total Harga:", style: TextStyle(fontSize: 16, color: Colors.black)),
-                          Text("Rp. ${widget.totalHarga}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.green)),
-                        ],
-                      ),
+                      _row("PC:", widget.dataPC.title),
+                      _row("Tanggal:", formattedDate),
+                      _row("Jam Booking:",
+                          "${widget.selectedHours.first}:00 - ${widget.selectedHours.last + 1}:00"),
+                      _row("Total Harga:", "Rp. ${widget.totalHarga}",
+                          bold: true, color: Colors.green),
                     ],
                   ),
                 ),
@@ -185,7 +173,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      onTap: _confirmPayment,
+                      onTap: () => _confirmPayment(context),
                       child: Center(
                         child: Text(
                           "Bayar Sekarang",
@@ -200,6 +188,22 @@ class _PaymentPageState extends State<PaymentPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _row(String label, String value,
+      {bool bold = false, Color color = Colors.black}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: TextStyle(fontSize: 16, color: Colors.black)),
+        Text(value,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: bold ? FontWeight.bold : FontWeight.normal,
+              color: color,
+            )),
+      ],
     );
   }
 
@@ -247,7 +251,7 @@ class _PaymentPageState extends State<PaymentPage> {
 class ParallelogramClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    double skewAmount = 45; // Kemiringan jajar genjang
+    double skewAmount = 45;
     Path path = Path();
     path.moveTo(skewAmount, 0);
     path.lineTo(size.width, 0);
@@ -260,3 +264,5 @@ class ParallelogramClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
+
+

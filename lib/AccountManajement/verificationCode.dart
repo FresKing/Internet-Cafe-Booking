@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:panthabash/main.dart';
 import 'newPW.dart';
 
 class VerificationCodePage extends StatelessWidget {
+  final List<TextEditingController> controllers =
+      List.generate(6, (_) => TextEditingController());
+
+  VerificationCodePage();
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -26,7 +30,7 @@ class VerificationCodePage extends StatelessWidget {
             ),
             child: Column(
               children: [
-                // Header dengan background diagonal
+                // Header Section
                 Stack(
                   children: [
                     Container(
@@ -44,69 +48,97 @@ class VerificationCodePage extends StatelessWidget {
                       child: IconButton(
                         icon: Icon(Icons.arrow_back_ios,
                             size: 30, color: Colors.black),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
+                        onPressed: () => Navigator.pop(context),
                       ),
                     ),
                     Positioned(
                       top: 100,
-                      left: 100,
+                      left: 80,
+                      right: 80,
                       child: Text(
                         "Verification Code",
+                        textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 36,
+                          fontSize: 30,
                           fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.w900,
+                          fontWeight: FontWeight.bold,
                           fontFamily: 'franklin gothic',
                         ),
                       ),
                     ),
                   ],
                 ),
+
+                // Content Section
                 Padding(
-                  padding: const EdgeInsets.all(50.0),
+                  padding: const EdgeInsets.all(30.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Enter the 4-digit verification code sent to your email:',
+                        'Enter the 6-digit verification code sent to your email:',
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 18,
-                        color: Colors.white
-                  
-                        ),
+                        style: TextStyle(fontSize: 18, color: Colors.white),
                       ),
-                      SizedBox(height: 40),
-                      VerificationCodeInput(),
-                      SizedBox(height: 40),
+                      SizedBox(height: 30),
+                      
+                      // 6-Digit Input Boxes
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: List.generate(6, (index) {
+                          return SizedBox(
+                            width: 40,
+                            child: TextField(
+                              controller: controllers[index],
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.center,
+                              maxLength: 1,
+                              style: TextStyle(color: Colors.white, fontSize: 20),
+                              decoration: InputDecoration(
+                                counterText: '',
+                                border: OutlineInputBorder(),
+                              ),
+                              onChanged: (value) {
+                                if (value.length == 1 && index < 5) {
+                                  FocusScope.of(context).nextFocus();
+                                } else if (value.isEmpty && index > 0) {
+                                  FocusScope.of(context).previousFocus();
+                                }
+                              },
+                            ),
+                          );
+                        }),
+                      ),
+                      SizedBox(height: 30),
+                      
+                      // Verify Button
                       ClipPath(
-                        clipper: ParallelogramClipper(),
+                        clipper: _ParallelogramClipper(),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 140, vertical: 8),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero),
-                      ),
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.black,
+                            padding: EdgeInsets.symmetric(horizontal: 120, vertical: 10),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                          ),
                           onPressed: () {
-                            // Handle verification code submission
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => NewPasswordPage(),
                               ),
                             );
-
+                            // Handle verification logic here
+                            String code = controllers.map((c) => c.text).join();
+                            print("Verification code: $code");
                           },
-                          child: Text('Verify',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontStyle: FontStyle.italic,
-                          )),
+                          child: Text(
+                            'Verify',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black,
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -121,59 +153,7 @@ class VerificationCodePage extends StatelessWidget {
   }
 }
 
-class VerificationCodeInput extends StatefulWidget {
-  @override
-  _VerificationCodeInputState createState() => _VerificationCodeInputState();
-}
-
-class _VerificationCodeInputState extends State<VerificationCodeInput> {
-  final List<TextEditingController> _controllers = List.generate(4, (_) => TextEditingController());
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: List.generate(4, (index) {
-        return SizedBox(
-          width: 40,
-          child: TextField(
-            controller: _controllers[index],
-            keyboardType: TextInputType.number,
-            textAlign: TextAlign.center,
-            maxLength: 1,
-            decoration: InputDecoration(
-              counterText: '',
-              border: OutlineInputBorder(),
-              hintStyle: TextStyle(color: Colors.white),
-            ),
-            style: TextStyle(color: Colors.white),
-            onChanged: (value) {
-              if (value.length == 1 && index < 3) {
-                FocusScope.of(context).nextFocus();
-              }
-            },
-          ),
-        );
-      }),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controllers.forEach((controller) => controller.dispose());
-    super.dispose();
-  }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: VerificationCodePage(),
-  ));
-}
-
-
-
-class ParallelogramClipper extends CustomClipper<Path> {
+class _ParallelogramClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     double skewAmount = 45;

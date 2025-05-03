@@ -1,0 +1,2 @@
+D:/KULIAH/magang/vscode/booking_warnet/FINISH before BE/android/app/.cxx/Debug/2257401y/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/KULIAH/magang/vscode/booking_warnet/FINISH before BE/android/app/.cxx/Debug/2257401y/arm64-v8a/CMakeFiles/rebuild_cache.dir

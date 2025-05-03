@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:panthabash/main.dart';
 import 'login.dart';
 
 class NewPasswordPage extends StatefulWidget {
@@ -11,6 +10,13 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
   bool _obscureText = true;
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+
+  void _navigateToLogin() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +56,8 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                       top: 50,
                       left: 20,
                       child: IconButton(
-                        icon: Icon(Icons.arrow_back_ios, size: 30, color: Colors.black),
+                        icon: Icon(Icons.arrow_back_ios,
+                            size: 30, color: Colors.black),
                         onPressed: () {
                           Navigator.pop(context);
                         },
@@ -101,7 +108,9 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                         decoration: InputDecoration(
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _obscureText ? Icons.remove_red_eye : Icons.visibility_off,
+                              _obscureText
+                                  ? Icons.remove_red_eye
+                                  : Icons.visibility_off,
                               color: Colors.grey,
                             ),
                             onPressed: () {
@@ -156,20 +165,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                           ),
                           child: Center(
                             child: TextButton(
-                              onPressed: () {
-                                if (_passwordController.text == _confirmPasswordController.text) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => LoginPage()),
-                                  );
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('Password tidak sama'),
-                                    ),
-                                  );
-                                }
-                              },
+                              onPressed: _navigateToLogin,
                               child: Text(
                                 'Confirm',
                                 style: TextStyle(

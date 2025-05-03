@@ -1,20 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:panthabash/modal/dataPC.dart';
 import 'package:panthabash/modal/PCdetails.dart';
+import 'package:intl/intl.dart';
 
 class HotelPackage extends StatelessWidget {
   final dataPC = DataPC.regularList();
+  final List<DataPC> dataPCList;
+
+  HotelPackage({Key? key, required this.dataPCList}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    if (dataPCList.isEmpty) {
+      return const Center(child: Text('Tidak ada data Reguler'));
+    }
+
     return Container(
-      height: 450,
       width: double.infinity,
       child: ListView.separated(
-        separatorBuilder: (_, index) => SizedBox(height: 10),
-        itemCount: dataPC.length,
+        physics: const NeverScrollableScrollPhysics(), // because inside parent scroll
+        shrinkWrap: true, // important to adjust height to content
+        separatorBuilder: (_, index) => const SizedBox(height: 10),
+        itemCount: dataPCList.length,
         itemBuilder: (context, index) {
-          DataPC hotelscreen = dataPC[index];
+          final pc = dataPCList[index];
           return Padding(
             padding: const EdgeInsets.all(10.0),
             child: GestureDetector(
@@ -22,7 +32,7 @@ class HotelPackage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => DetailsScreen(dataPC: hotelscreen),
+                    builder: (_) => DetailsScreen(dataPC: pc),
                   ),
                 );
               },
@@ -32,7 +42,7 @@ class HotelPackage extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.black12,
                       offset: Offset(0.0, 4.0),
@@ -42,15 +52,15 @@ class HotelPackage extends StatelessWidget {
                 ),
                 child: Stack(
                   children: [
-                    // Gambar Hotel
+                    // Image
                     Positioned(
                       child: Hero(
-                        tag: hotelscreen.imgurl,
+                        tag: pc.imgurl,
                         child: Container(
                           height: 150,
                           width: 120,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(10),
                               bottomLeft: Radius.circular(10),
                             ),
@@ -62,8 +72,8 @@ class HotelPackage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    
-                    // Nama Hotel & Harga
+
+                    // Title & Price
                     Positioned(
                       top: 15,
                       right: 110,
@@ -71,15 +81,15 @@ class HotelPackage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            dataPC[index].title,
-                            style: TextStyle(
+                            pc.title,
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                           Text(
-                            'Rp. ${dataPC[index].price} / Hour',
-                            style: TextStyle(
+                            'Rp. ${NumberFormat('#,##0', 'id_ID').format(pc.price)} / Hour',
+                            style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
                               color: Colors.red,
@@ -89,7 +99,7 @@ class HotelPackage extends StatelessWidget {
                       ),
                     ),
 
-                    // Tombol BOOK NOW berbentuk jajar genjang
+                    // BOOK NOW button
                     Positioned(
                       bottom: 10,
                       left: 180,
@@ -98,10 +108,10 @@ class HotelPackage extends StatelessWidget {
                         child: Container(
                           height: 35,
                           width: 150,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 58, 58, 58),
+                          decoration: const BoxDecoration(
+                            color: Color.fromARGB(255, 58, 58, 58),
                           ),
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               'BOOK NOW',
                               style: TextStyle(
@@ -126,11 +136,11 @@ class HotelPackage extends StatelessWidget {
   }
 }
 
-// Custom Clipper untuk bentuk jajar genjang
+// Custom Clipper for parallelogram shape
 class ParallelogramClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    double skewAmount = 20; // Kemiringan jajar genjang
+    double skewAmount = 20; // skew amount
     Path path = Path();
     path.moveTo(skewAmount, 0);
     path.lineTo(size.width, 0);
