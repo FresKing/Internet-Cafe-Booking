@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:panthabash/homePage.dart';
+import 'package:panthabash/mainPage/homePage.dart';
 
 class SuccessPage extends StatelessWidget {
   @override
@@ -96,7 +96,6 @@ class SuccessPage extends StatelessWidget {
     );
   }
 }
-
 class ParallelogramClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -113,3 +112,4 @@ class ParallelogramClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
+

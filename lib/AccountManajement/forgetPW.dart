@@ -21,10 +21,24 @@ class _ForgetPasswordPage extends State<ForgetPasswordPage> {
       return;
     }
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => VerificationCodePage(),
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Email Terkirim"),
+        content: Text("Silakan cek email kamu untuk mereset password."),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => VerificationCodePage(email: email)),
+              );
+            },
+            child: Text("OK"),
+          ),
+        ],
       ),
     );
   }
@@ -185,4 +199,3 @@ class ParallelogramClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
-

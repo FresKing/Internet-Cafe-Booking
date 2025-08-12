@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:panthabash/modal/dataPC.dart';
 import 'package:panthabash/booking/booking.dart';
+// Removed backend config import
+import 'package:intl/intl.dart';
 
 class DetailsScreen extends StatefulWidget {
   final DataPC dataPC;
@@ -10,191 +12,190 @@ class DetailsScreen extends StatefulWidget {
   @override
   _DetailsScreenState createState() => _DetailsScreenState();
 }
+
 class _DetailsScreenState extends State<DetailsScreen> {
+  // Using local asset images; no backend URL
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           Expanded(
-            child: ListView(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Stack(
+            child: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  expandedHeight: MediaQuery.of(context).size.width * 0.8,
+                  floating: false,
+                  pinned: false,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Hero(
+                      tag: widget.dataPC.imgurl,
+                      child: Image.asset(widget.dataPC.imgurl, fit: BoxFit.cover),
+                    ),
+                  ),
+                  leading: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: CircleAvatar(
+                      backgroundColor: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.7),
+                      child: IconButton(
+                        icon: Icon(Icons.arrow_back, color: const Color.fromARGB(255, 0, 0, 0)),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          height: MediaQuery.of(context).size.width * 0.8,
-                          width: 500,
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black26,
-                                offset: Offset(0.0, 2.0),
-                                blurRadius: 6.0,
-                              )
-                            ],
-                          ),
-                          child: Hero(
-                            tag: widget.dataPC.imgurl,
-                            child: Image(
-                              image: AssetImage(widget.dataPC.imgurl),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: 50,
-                          left: 30,
-                          child: Container(
-                            height: 30,
-                            width: 30,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
-                            ),
-                            child: Center(
-                              child: IconButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                icon: Icon(
-                                  Icons.arrow_back_ios,
-                                  size: 15,
-                                ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              widget.dataPC.title,
+                              style: TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
                               ),
                             ),
-                          ),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: _getStatusColor(widget.dataPC.status).withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    width: 10,
+                                    height: 10,
+                                    decoration: BoxDecoration(
+                                      color: _getStatusColor(widget.dataPC.status),
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                  SizedBox(width: 6),
+                                  Text(
+                                    widget.dataPC.status,
+                                    style: TextStyle(
+                                      color: _getStatusColor(widget.dataPC.status),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(widget.dataPC.description),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20, top: 20),
-                      child: Text(
-                        widget.dataPC.title,
-                        style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w400),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(widget.dataPC.description),
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),
           ),
-          // Bottom section with price, status, and button
           Container(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             decoration: BoxDecoration(
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
                   color: Colors.black12,
                   offset: Offset(0, -2),
-                  blurRadius: 6.0,
-                )
+                  blurRadius: 10,
+                ),
               ],
             ),
-            child: Column(
+            child: Row(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Price and Status
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Price',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          'Rp. ${widget.dataPC.price}',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
+                    Text(
+                      "Harga per Jam",
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 14,
+                      ),
                     ),
-                    // Status
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Status',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
-                        ),
-                        SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Container(
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: widget.dataPC.status == 'Maintenance'
-                                    ? Colors.red
-                                    : widget.dataPC.status == 'Sedang Dipakai'
-                                        ? const Color.fromARGB(255, 255, 230, 0)
-                                        : Colors.green,
-                              ),
-                            ),
-                            SizedBox(width: 5),
-                            Text(
-                              widget.dataPC.status == 'Maintenance'
-                                  ? 'Maintenance'
-                                  : widget.dataPC.status == 'Sedang Dipakai'
-                                      ? 'Sedang Dipakai'
-                                      : 'Tersedia',
-                              style: TextStyle(
-                                color: widget.dataPC.status == 'Maintenance'
-                                    ? Colors.red
-                                    : widget.dataPC.status == 'Sedang Dipakai'
-                                        ?  const Color.fromARGB(255, 255, 230, 0)
-                                        : Colors.green,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                    SizedBox(height: 4),
+                    Text(
+                      "Rp. ${NumberFormat('#,##0', 'id_ID').format(widget.dataPC.price)}",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(height: 15),
-                // Book Now Button
-                ClipPath(
-                  clipper: ParallelogramClipper(),
+                Spacer(),
+                MouseRegion(
+                  cursor: SystemMouseCursors.click,
                   child: GestureDetector(
-                    onTap: () {
-                      if (widget.dataPC.status != 'Maintenance') {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => BookingPage(dataPC: widget.dataPC),
-                          ),
-                        );
-                      }
-                    },
-                    child: Container(
-                      height: 50,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: widget.dataPC.status == 'Maintenance'
-                            ? Colors.grey
-                            : const Color.fromARGB(255, 0, 0, 0),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Book Now',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.white,
+                    onTap: widget.dataPC.status != 'Maintenance'
+                        ? () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BookingPage(dataPC: widget.dataPC),
+                              ),
+                            );
+                          }
+                        : null,
+                    child: ClipPath(
+                      clipper: ParallelogramClipper(),
+                      child: Container(
+                        width: 180,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          gradient: widget.dataPC.status == 'Maintenance'
+                              ? LinearGradient(colors: [Colors.grey, Colors.grey[600]!])
+                              : LinearGradient(
+                                  colors: [Colors.black, Colors.grey[900]!],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                          boxShadow: [
+                            if (widget.dataPC.status != 'Maintenance')
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 8,
+                                offset: Offset(0, 4),
+                              ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Icon(
+                              //   Icons.calendar_today,
+                              //   color: Colors.white,
+                              //   size: 20,
+                              // ),
+                              SizedBox(width: 10),
+                              Text(
+                                "BOOK NOW",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1.2,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -204,18 +205,29 @@ class _DetailsScreenState extends State<DetailsScreen> {
               ],
             ),
           ),
-          // SizedBox(height: 15),
         ],
       ),
     );
   }
+
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'Maintenance':
+        return Colors.red;
+      case 'Sedang Dipakai':
+        return const Color.fromARGB(255, 255, 230, 0);
+      case 'Tersedia':
+        return Colors.green;
+      default:
+        return Colors.grey;
+    }
+  }
 }
 
-// Custom Clipper untuk membuat bentuk jajar genjang
 class ParallelogramClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    double skewAmount = 45; // Kemiringan jajar genjang
+    double skewAmount = 30;
     Path path = Path();
     path.moveTo(skewAmount, 0);
     path.lineTo(size.width, 0);

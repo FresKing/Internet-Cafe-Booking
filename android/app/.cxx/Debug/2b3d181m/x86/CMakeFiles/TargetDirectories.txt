@@ -1,0 +1,2 @@
+D:/KULIAH/magang/vscode/FINISH/Internet-Cafe-Booking/android/app/.cxx/Debug/2b3d181m/x86/CMakeFiles/edit_cache.dir
+D:/KULIAH/magang/vscode/FINISH/Internet-Cafe-Booking/android/app/.cxx/Debug/2b3d181m/x86/CMakeFiles/rebuild_cache.dir

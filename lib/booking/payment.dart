@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:panthabash/modal/dataPC.dart';
 import 'success.dart';
+// Removed backend services
+import 'package:intl/intl.dart';
 
 class PaymentPage extends StatefulWidget {
   final DataPC dataPC;
@@ -28,35 +30,68 @@ class _PaymentPageState extends State<PaymentPage> {
       return;
     }
 
+    
+
     showDialog(
       context: parentContext,
       builder: (context) => AlertDialog(
-        title: Text("Konfirmasi Pembayaran"),
-        content: Text(
-          "Anda akan membayar Rp. ${widget.totalHarga} melalui $selectedPaymentMethod.",
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Text("Konfirmasi Pembayaran",
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        content: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: "Anda akan membayar ",
+                style: TextStyle(fontSize: 16, color: Colors.black),
+              ),
+              TextSpan(
+                text: "Rp. ${NumberFormat('#,##0', 'id_ID').format(widget.totalHarga)}",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green),
+              ),
+              TextSpan(
+                text: " melalui $selectedPaymentMethod.",
+                style: TextStyle(fontSize: 16, color: Colors.black),
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text("Batal"),
+            child: Text("Batal", style: TextStyle(color: Colors.grey[700])),
           ),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.black,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            ),
             onPressed: () async {
-              Navigator.pop(context); // Tutup pop-up dulu
+              Navigator.pop(context);
 
-              // Show loading dialog
               showDialog(
                 context: parentContext,
                 barrierDismissible: false,
                 builder: (context) => Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                  ),
                 ),
               );
 
-              // Simulate payment success delay
-              await Future.delayed(Duration(seconds: 2));
+              // Backend removed: simulate success immediately
+              await Future.delayed(Duration(milliseconds: 400));
 
-              Navigator.pop(parentContext); // Close loading
+              Navigator.pop(parentContext);
 
               if (mounted) {
                 Navigator.pushReplacement(
@@ -65,7 +100,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 );
               }
             },
-            child: Text("Bayar Sekarang"),
+            child: Text("Bayar Sekarang", style: TextStyle(fontSize: 16)),
           ),
         ],
       ),
@@ -76,12 +111,16 @@ class _PaymentPageState extends State<PaymentPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Peringatan"),
-        content: Text(message),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title:
+            Text("Peringatan", style: TextStyle(fontWeight: FontWeight.bold)),
+        content: Text(message, style: TextStyle(fontSize: 16)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text("OK"),
+            child: Text("OK", style: TextStyle(color: Colors.black)),
           ),
         ],
       ),
@@ -94,56 +133,56 @@ class _PaymentPageState extends State<PaymentPage> {
         "${widget.selectedDay.day}-${widget.selectedDay.month}-${widget.selectedDay.year}";
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 243, 243, 243),
-      body: Container(
+      appBar: AppBar(
+        title: Text("Pembayaran"),
+      ),
+      backgroundColor: Color(0xFFF5F5F5),
+      body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 10),
-              Row(
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.arrow_back_ios,
-                        size: 30, color: Colors.black),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                  Text("Pembayaran",
-                      style: TextStyle(color: Colors.black, fontSize: 20)),
-                ],
-              ),
-              SizedBox(height: 10),
-              Text(
-                "Detail Pemesanan",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 10),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      offset: Offset(0.0, 4.0),
-                      blurRadius: 10.0,
-                    ),
-                  ],
+              Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
                 ),
+                shadowColor: Colors.black.withOpacity(0.1),
+                color: Colors.white,
                 child: Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: EdgeInsets.all(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 5),
-                      _row("PC:", widget.dataPC.title),
-                      _row("Tanggal:", formattedDate),
-                      _row("Jam Booking:",
-                          "${widget.selectedHours.first}:00 - ${widget.selectedHours.last + 1}:00"),
-                      _row("Total Harga:", "Rp. ${widget.totalHarga}",
-                          bold: true, color: Colors.green),
+                      Text(
+                        "Detail Pemesanan",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      Divider(height: 1, color: Colors.grey[300]),
+                      SizedBox(height: 15),
+                      _buildDetailRow("PC:", widget.dataPC.title),
+                      SizedBox(height: 12),
+                      _buildDetailRow("Tanggal:", formattedDate),
+                      SizedBox(height: 12),
+                      _buildDetailRow(
+                        "Jam Booking:",
+                        "${widget.selectedHours.first}:00 - ${widget.selectedHours.last + 1}:00",
+                      ),
+                      SizedBox(height: 15),
+                      Divider(height: 1, color: Colors.grey[300]),
+                      SizedBox(height: 15),
+                      _buildDetailRow(
+                        "Total Harga:",
+                        "Rp. ${NumberFormat('#,##0', 'id_ID').format(widget.totalHarga)}",
+                        bold: true,
+                        color: Color(0xFF2E7D32),
+                      ),
                     ],
                   ),
                 ),
@@ -151,33 +190,76 @@ class _PaymentPageState extends State<PaymentPage> {
               SizedBox(height: 20),
               Text(
                 "Pilih Metode Pembayaran",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
               ),
-              SizedBox(height: 10),
-              Column(
-                children: [
-                  _buildPaymentOption("Transfer Bank"),
-                  _buildPaymentOption("E-Wallet"),
-                  _buildPaymentOption("QRIS"),
-                ],
+              SizedBox(height: 15),
+              Expanded(
+                child: ListView(
+                  physics: BouncingScrollPhysics(),
+                  children: [
+                    _buildPaymentOption(
+                      "Transfer Bank",
+                      Icons.account_balance,
+                      Colors.blue,
+                    ),
+                    SizedBox(height: 12),
+                    _buildPaymentOption(
+                      "E-Wallet",
+                      Icons.phone_iphone,
+                      Colors.purple,
+                    ),
+                    SizedBox(height: 12),
+                    _buildPaymentOption(
+                      "QRIS",
+                      Icons.qr_code,
+                      Colors.orange,
+                    ),
+                  ],
+                ),
               ),
-              Spacer(),
-              ClipPath(
-                clipper: ParallelogramClipper(),
-                child: Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                  ),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () => _confirmPayment(context),
+              SizedBox(height: 20),
+              MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: GestureDetector(
+                  onTap: () => _confirmPayment(context),
+                  child: ClipPath(
+                    clipper: ParallelogramClipper(),
+                    child: Container(
+                      width: double.infinity,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.black, Colors.grey[900]!],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 8,
+                            offset: Offset(0, 4),
+                          ),
+                        ],
+                      ),
                       child: Center(
-                        child: Text(
-                          "Bayar Sekarang",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            //Icon(Icons.payment, color: Colors.white),
+                            SizedBox(width: 10),
+                            Text(
+                              "Bayar Sekarang",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -191,63 +273,79 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-  Widget _row(String label, String value,
-      {bool bold = false, Color color = Colors.black}) {
+  Widget _buildDetailRow(String label, String value,
+      {bool bold = false, Color color = Colors.black87}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: TextStyle(fontSize: 16, color: Colors.black)),
-        Text(value,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: bold ? FontWeight.bold : FontWeight.normal,
-              color: color,
-            )),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.grey[700],
+          ),
+        ),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: bold ? FontWeight.bold : FontWeight.normal,
+            color: color,
+          ),
+        ),
       ],
     );
   }
 
-  Widget _buildPaymentOption(String method) {
+  Widget _buildPaymentOption(String method, IconData icon, Color color) {
     return GestureDetector(
       onTap: () {
         setState(() {
           selectedPaymentMethod = method;
         });
       },
-      child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        color: selectedPaymentMethod == method
-            ? Colors.blue.shade100
-            : Colors.white,
-        child: Padding(
-          padding: EdgeInsets.all(12),
-          child: Row(
-            children: [
-              Icon(
-                method == "Transfer Bank"
-                    ? Icons.account_balance
-                    : method == "E-Wallet"
-                        ? Icons.phone_android
-                        : Icons.qr_code,
-                color: Colors.black,
-              ),
-              SizedBox(width: 10),
-              Text(
-                method,
-                style: TextStyle(fontSize: 16),
-              ),
-              Spacer(),
-              if (selectedPaymentMethod == method)
-                Icon(Icons.check_circle, color: Colors.green),
-            ],
+      child: Container(
+        decoration: BoxDecoration(
+          color: selectedPaymentMethod == method
+              ? color.withOpacity(0.1)
+              : Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: selectedPaymentMethod == method
+                ? color
+                : Colors.grey.withOpacity(0.3),
+            width: selectedPaymentMethod == method ? 1.5 : 1,
           ),
+        ),
+        padding: EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(8),
+              // decoration: BoxDecoration(
+              //   color: color.withOpacity(0.2),
+              //   shape: BoxShape.circle,
+              // ),
+              child: Icon(icon, color: color, size: 24),
+            ),
+            SizedBox(width: 15),
+            Text(
+              method,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.black87,
+              ),
+            ),
+            Spacer(),
+            if (selectedPaymentMethod == method)
+              Icon(Icons.check_circle, color: Colors.green, size: 24),
+          ],
         ),
       ),
     );
   }
 }
-
 class ParallelogramClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -264,5 +362,4 @@ class ParallelogramClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
-
 

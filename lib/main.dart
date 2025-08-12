@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'homePage.dart';
+import 'mainPage/splashScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -12,8 +13,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'My App',
-      home: HomePage(),
+      home: SplashScreen(),
     );
   }
 }
+
+// Auth wrapper not needed; splash can navigate internally as designed
 

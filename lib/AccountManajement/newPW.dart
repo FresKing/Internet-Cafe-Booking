@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
+// Backend removed
 
 class NewPasswordPage extends StatefulWidget {
+  final String email;
+  final String token;
+
+  NewPasswordPage({required this.email, required this.token});
+
   @override
   _NewPasswordPageState createState() => _NewPasswordPageState();
 }
@@ -9,13 +15,34 @@ class NewPasswordPage extends StatefulWidget {
 class _NewPasswordPageState extends State<NewPasswordPage> {
   bool _obscureText = true;
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
-  void _navigateToLogin() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
+  void updatePassword() {
+    String password = _passwordController.text;
+    String confirmPassword = _confirmPasswordController.text;
+
+    // Validasi client-side
+    if (password.isEmpty || confirmPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Password tidak boleh kosong')),
+      );
+      return;
+    }
+
+    if (password != confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Password tidak sama')),
+      );
+      return;
+    }
+
+    // Simulate success
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Password berhasil diubah.')),
     );
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginPage()));
   }
 
   @override
@@ -165,7 +192,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                           ),
                           child: Center(
                             child: TextButton(
-                              onPressed: _navigateToLogin,
+                              onPressed: updatePassword,
                               child: Text(
                                 'Confirm',
                                 style: TextStyle(
@@ -213,4 +240,3 @@ class ParallelogramClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
-

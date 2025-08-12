@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:panthabash/modal/dataPC.dart';
-import '../AccountManajement/login.dart'; // Import halaman login
 import 'payment.dart'; // Import halaman pembayaran
 import 'package:table_calendar/table_calendar.dart';
-//import '../modal/api_service.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 //import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,6 +16,7 @@ class BookingPage extends StatefulWidget {
 }
 
 class _BookingPageState extends State<BookingPage> {
+
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
   List<int> selectedHours = [];
@@ -32,7 +30,7 @@ class _BookingPageState extends State<BookingPage> {
   void initState() {
     super.initState();
     _selectedDay = DateTime.now(); // set default ke hari ini
-    _loadBlockedHours(_selectedDay); // load static blocked hours
+    fetchBlockedHours(_selectedDay); // local: no backend
   }
 
   void _updateTotalHarga() {
@@ -80,56 +78,16 @@ class _BookingPageState extends State<BookingPage> {
 
   bool _isLoading = false;
 
-  void _showLoginRequiredDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) => AlertDialog(
-        title: Text(
-          "Login Diperlukan",
-          style: TextStyle(color: Theme.of(context).primaryColor),
-        ),
-        content: Text("Silakan login terlebih dahulu untuk melanjutkan."),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context); // Tutup pop-up
-            },
-            child: Text("Batal"),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context); // Tutup pop-up
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
-              );
-            },
-            child: Text("OK"),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _loadBlockedHours(DateTime date) async {
-    // Provide static blocked hours for demo
+  Future<void> fetchBlockedHours(DateTime date) async {
+    // Backend removed: no blocked hours; keep empty
     setState(() {
-      _isLoadingHours = true;
-    });
-    await Future.delayed(Duration(seconds: 1));
-    setState(() {
-      blockedHours = [10, 11, 12]; // example blocked hours
+      blockedHours = [];
       _isLoadingHours = false;
     });
   }
 
   Future<void> _checkUserAndProceed() async {
-    setState(() {
-      _isLoading = true;
-    });
-    await Future.delayed(Duration(seconds: 1));
-    // Simulate user logged in always
+    // Backend removed: proceed directly
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -141,16 +99,13 @@ class _BookingPageState extends State<BookingPage> {
         ),
       ),
     );
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 243, 243, 243),
-      // appBar: AppBar(title: Text("Booking Time")),
+      appBar: AppBar(title: Text("Booking Time")),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Stack(
@@ -158,18 +113,6 @@ class _BookingPageState extends State<BookingPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_back_ios,
-                          size: 30, color: Colors.black),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    Text("Booking Time",
-                        style: TextStyle(color: Colors.black, fontSize: 20)),
-                  ],
-                ),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
@@ -186,7 +129,7 @@ class _BookingPageState extends State<BookingPage> {
                         _focusedDay = focusedDay;
                         selectedHours.clear();
                       });
-                      _loadBlockedHours(selectedDay);
+                      fetchBlockedHours(selectedDay);
                     },
                     calendarFormat: _calendarFormat,
                     onFormatChanged: (format) {
@@ -287,7 +230,7 @@ class _BookingPageState extends State<BookingPage> {
                     ),
                     Spacer(),
                     Text(
-                      "Rp. $totalHarga",
+                      "Rp. ${NumberFormat('#,##0', 'id_ID').format(totalHarga)}",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -435,4 +378,5 @@ class ParallelogramClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
+
 
